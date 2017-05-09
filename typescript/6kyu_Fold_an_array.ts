@@ -1,12 +1,43 @@
-export function foldArray(array:number[], runs:number) : number[]
-{
+/*
+#Fold an array
 
-    // console.log(recursiveRun(array, runs));
+In this kata you have to write a method that folds a given array of integers by the middle x-times.
+
+    An example says more than thousand words:
+
+    Fold 1-times:
+[1,2,3,4,5] -> [6,6,3]
+
+A little visualization (NOT for the algorithm but for the idea of folding):
+
+Step 1         Step 2        Step 3       Step 4       Step5
+5/           5|         5\
+4/            4|          4\
+1 2 3 4 5      1 2 3/         1 2 3|       1 2 3\       6 6 3
+----*----      ----*          ----*        ----*        ----*
+
+
+Fold 2-times:
+[1,2,3,4,5] -> [9,6]
+As you see, if the count of numbers is odd, the middle number will stay. Otherwise the fold-point is between the middle-numbers, so all numbers would be added in a way.
+
+    The array will always contain numbers and will never be null. The parameter runs will always be a positive integer greater than 0 and says how many runs of folding your method has to do.
+
+    If an array with one element is folded, it stays as the same array.
+
+    The input array should not be modified!
+
+Have fun coding it and please don't forget to vote and rank this kata! :-)
+
+I have created other katas. Have a look if you like coding and challenges.
+*/
+export function foldArray(array:number[], runs:number):number[]
+{
     let output: number []  = <number []>recursiveRun(array, runs);
     return output;
 }
 
-export function recursiveRun(inputArray: number [], runs: number): number [] {
+export function recursiveRun(inputArray: number [], runs: number): any {
 
     let arrayLength: number = inputArray.length;
     let isOdd: boolean = arrayLength % 2 !== 0;
@@ -23,31 +54,17 @@ export function recursiveRun(inputArray: number [], runs: number): number [] {
         totalNumsOnEachSide = arrayLength/2;
     }
 
-    if(totalNumsOnEachSide === 1){
 
-        let a: number = inputArray[0];
-        let b: number = inputArray[arrayLength-1];
+    for(let i = 0; i < totalNumsOnEachSide; i++) {
+        let a: number = inputArray[i];
+        let b: number = inputArray[arrayLength-1-i];
         outputArray.push(a+b);
-    }else {
-        for(let i = 0; i < totalNumsOnEachSide; i++) {
-            let a: number = inputArray[i];
-            let b: number = inputArray[arrayLength-1-i];
-            outputArray.push(a+b);
-        }
     }
+
 
     if(isOdd) outputArray.push(middleNum);
-
-
-//           console.log(inputArray)
-//           console.log(outputArray)
-
     runs--;
 
-    if(runs!==0) {
-//         console.log("runs",_runs)
-        recursiveRun(outputArray, runs);
-    } else {
-        return outputArray;
-    }
+    return runs !== 0 ? recursiveRun(outputArray, runs) : outputArray;
+
 }
